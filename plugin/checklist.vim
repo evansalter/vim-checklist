@@ -51,7 +51,7 @@ function! s:checklistDisableCheckbox(lineNum, lineText)
     call setline(a:lineNum, line)
 endfunc
 
-function! s:checklistNewLine()
+function! s:checklistNewLine(type)
     let curLineNum = line('.')
     let curLine = getline(curLineNum)
     let nextLineNum = curLineNum + 1
@@ -66,9 +66,16 @@ function! s:checklistNewLine()
             " Otherwise, create the next checkbox
             call append(curLineNum, split[0]."] ")
             call cursor(nextLineNum, 99)
+            if a:type == "o"
+                call feedkeys("a", "n")
+            endif
         endif
     else
-        call feedkeys("\<CR>", "n")
+        if a:type == "cr"
+            call feedkeys("\<CR>", "n")
+        else
+            call feedkeys("o", "n")
+        endif
     endif
     return ""
 endfunc
@@ -77,5 +84,5 @@ endfunc
 command -range ChecklistToggleCheckbox <line1>,<line2>call <SID>checklistAction("toggle")
 command -range ChecklistEnableCheckbox <line1>,<line2>call <SID>checklistAction("enable")
 command -range ChecklistDisableCheckbox <line1>,<line2>call <SID>checklistAction("disable")
-exec "autocmd FileType " . join(g:checklist_filetypes, ",") . " inoremap <buffer> <silent> <cr> <C-R>=<SID>checklistNewLine()<cr>"
-exec "autocmd FileType " . join(g:checklist_filetypes, ",") . " nnoremap <buffer> <silent> o :call <SID>checklistNewLine()<cr>a"
+exec "autocmd FileType " . join(g:checklist_filetypes, ",") . " inoremap <buffer> <silent> <cr> <C-R>=<SID>checklistNewLine('cr')<cr>"
+exec "autocmd FileType " . join(g:checklist_filetypes, ",") . " nnoremap <buffer> <silent> o :call <SID>checklistNewLine('o')<cr>"
