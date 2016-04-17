@@ -60,12 +60,12 @@ function! s:checklistNewLine()
         let split = split(curLine, "\]")
         if len(split) == 1 || (len(split) > 1 && split[1] == " ")
             " If current checkbox has no value, clear the line
-            " call feedkeys("\<CR>", "n")
+            call feedkeys("\<CR>", "n")
             call setline('.', '')
         else
             " Otherwise, create the next checkbox
-            call setline(curLineNum + 1, split[0]."] ")
-            call cursor(nextLineNum, 7)
+            call append(curLineNum, split[0]."] ")
+            call cursor(nextLineNum, 99)
         endif
     else
         call feedkeys("\<CR>", "n")
@@ -78,3 +78,4 @@ command -range ChecklistToggleCheckbox <line1>,<line2>call <SID>checklistAction(
 command -range ChecklistEnableCheckbox <line1>,<line2>call <SID>checklistAction("enable")
 command -range ChecklistDisableCheckbox <line1>,<line2>call <SID>checklistAction("disable")
 exec "autocmd FileType " . join(g:checklist_filetypes, ",") . " inoremap <buffer> <silent> <cr> <C-R>=<SID>checklistNewLine()<cr>"
+exec "autocmd FileType " . join(g:checklist_filetypes, ",") . " nnoremap <buffer> <silent> o :call <SID>checklistNewLine()<cr>a"
