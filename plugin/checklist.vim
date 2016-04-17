@@ -57,14 +57,14 @@ function! s:checklistNewLine()
     let nextLineNum = curLineNum + 1
     if s:hasCheckbox(curLine)
         " Find checkbox text
-        let after = split(curLine, "\]")
-        if len(after) == 1 || (len(after) > 1 && after[1] == " ")
+        let split = split(curLine, "\]")
+        if len(split) == 1 || (len(split) > 1 && split[1] == " ")
             " If current checkbox has no value, clear the line
             " call feedkeys("\<CR>", "n")
             call setline('.', '')
         else
             " Otherwise, create the next checkbox
-            call setline(curLineNum + 1, "- [ ] ")
+            call setline(curLineNum + 1, split[0]."] ")
             call cursor(nextLineNum, 7)
         endif
     else
