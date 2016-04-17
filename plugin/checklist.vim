@@ -3,6 +3,10 @@ if exists("g:loaded_checklist")
 endif
 let g:loaded_checklist = 1
 
+if !exists('g:checklist_filetypes')
+    let g:checklist_filetypes = ['markdown', 'text']
+endif
+
 function! s:hasCheckbox(line)
     if matchstr(a:line, '\[[ x]\]') == ""
         return 0
@@ -11,21 +15,41 @@ function! s:hasCheckbox(line)
     endif
 endfunc
 
-function! s:checklistToggleCheckbox()
-    let line = getline('.')
-    if s:hasCheckbox(line)
-        if matchstr(line, '- \[x\]') == ""
-            let line = substitute(line, '\[ \]', '\[x\]', '')
-        else
-            let line = substitute(line, '\[x\]', '\[ \]', '')
+function! s:checklistAction(action)
+    let currentLine = a:firstline
+    while currentLine <= a:lastline
+        let line = getline(currentLine)
+        if s:hasCheckbox(line)
+            if a:action == "toggle"
+                call s:checklistToggleCheckbox(currentLine, line)
+            elseif a:action == "enable"
+                call s:checklistEnableCheckbox(currentLine, line)
+            else
+                call s:checklistDisableCheckbox(currentLine, line)
+            endif
         endif
-        call setline('.', line)
-    else
-        echo "No checkbox here."
-    endif
+        let currentLine = currentLine + 1
+    endwhile
 endfunc
 
-command ChecklistToggleCheckbox :call <SID>checklistToggleCheckbox()
+function! s:checklistToggleCheckbox(lineNum, lineText)
+    if matchstr(a:lineText, '\[x\]') == ""
+        let line = substitute(a:lineText, '\[ \]', '\[x\]', '')
+    else
+        let line = substitute(a:lineText, '\[x\]', '\[ \]', '')
+    endif
+    call setline(a:lineNum, line)
+endfunc
+
+function! s:checklistEnableCheckbox(lineNum, lineText)
+    let line = substitute(a:lineText, '\[ \]', '\[x\]', '')
+    call setline(a:lineNum, line)
+endfunc
+
+function! s:checklistDisableCheckbox(lineNum, lineText)
+    let line = substitute(a:lineText, '\[x\]', '\[ \]', '')
+    call setline(a:lineNum, line)
+endfunc
 
 function! s:checklistNewLine()
     let curLineNum = line('.')
@@ -49,4 +73,8 @@ function! s:checklistNewLine()
     return ""
 endfunc
 
-exec "inoremap <buffer> <silent> <cr> <C-R>=<SID>checklistNewLine()<cr>"
+" command ChecklistToggleCheckbox call <SID>checklistToggleCheckbox()
+command -range ChecklistToggleCheckbox <line1>,<line2>call <SID>checklistAction("toggle")
+command -range ChecklistEnableCheckbox <line1>,<line2>call <SID>checklistAction("enable")
+command -range ChecklistDisableCheckbox <line1>,<line2>call <SID>checklistAction("disable")
+exec "autocmd FileType " . join(g:checklist_filetypes, ",") . " inoremap <buffer> <silent> <cr> <C-R>=<SID>checklistNewLine()<cr>"
