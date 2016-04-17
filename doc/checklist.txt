@@ -1,0 +1,107 @@
+*checklist.txt* easy plain-text checklists
+
+====================================================================
+CONTENTS                                         *ChecklistContents*
+
+    1. Usage ................ |ChecklistUsage|
+        1.1 Creating Lists... |ChecklistCreate|
+        1.2 Controlling Boxes |ChecklistControl|
+        1.3 Filetypes         |ChecklistFiletypes|
+    2. Mappings ............. |ChecklistMappings|
+    3. License .............. |ChecklistLicense|
+    4. Bugs ................. |ChecklistBugs|
+    5. Contributing ......... |ChecklistContributing|
+    6. Changelog ............ |ChecklistChangelog|
+    7. Credits .............. |ChecklistCredits|
+
+====================================================================
+Section 1: Usage                                    *ChecklistUsage*
+
+This plugin allows you to easily create plain-text checklists.  It
+will auto-create new list items as you add them, as well as allow
+you to enable/disable/toggle checkboxes.
+
+--------------------------------------------------------------------
+Section 1.1: Creating Lists                        *ChecklistCreate*
+
+To begin a checklist, enter the following:
+
+    - [ ] <OPTION 1 TITLE>
+
+Upon pressing enter, a new option will be created like so:
+
+    - [ ] <OPTION 1 TITLE>
+    - [ ]  
+
+You can now enter the title of the second option, or press enter
+again to end the list.
+
+The checkbox can be any string, as long as it has one of the
+following sets of characters:
+
+    1. [ ] (for unchecked boxes)
+    2. [x] (for checked boxes)
+
+--------------------------------------------------------------------
+Section 1.2: Controlling Boxes                    *ChecklistControl*
+
+With your cursor on a line containing a checkbox, or with a range
+of checkboxes selected, you can execute one of the following
+commands:
+
+    :ChecklistToggleCheckbox<cr>
+    :ChecklistEnableCheckbox<cr>
+    :ChecklistDisableCheckbox<cr>
+
+--------------------------------------------------------------------
+Section 1.3: Filetypes                          *ChecklistFiletypes*
+
+By default, this plugin is enabled for text and md filetypes.  To
+set your own list of filetypes, add the following to your .vimrc:
+
+    let g:checklist_filetypes=['filetype1', 'filetype2', ...]
+
+====================================================================
+Section 2: Mappings                              *ChecklistMappings*
+
+By default, this plugin does not come with any mappings for the
+commands.  You may wish to map the commands in section 1.2.  Make
+sure to set mappings both form normal mode and visual mode, which
+will allow you to control both single boxes, and a range of boxes.
+
+The author has the following mappings set:
+
+    nnoremap <leader>ct :ChecklistToggleCheckbox<cr>
+    nnoremap <leader>ce :ChecklistEnableCheckbox<cr>
+    nnoremap <leader>cd :ChecklistDisableCheckbox<cr>
+    vnoremap <leader>ct :ChecklistToggleCheckbox<cr>
+    vnoremap <leader>ce :ChecklistEnableCheckbox<cr>
+    vnoremap <leader>cd :ChecklistDisableCheckbox<cr>
+
+====================================================================
+Section 3: License                               *ChecklistLicense*
+
+vim-checklist is licenced under the MIT license.
+
+====================================================================
+Section 4: Bugs                                      *ChecklistBugs*
+
+If you find a bug, please open an issue on GitHub:
+
+    http://github.com/evansalter/vim-checklist/issues/
+
+====================================================================
+Section 4: Contributing                      *ChecklistContributing*
+
+If you would like to contribute to this project, fork the repo on
+GitHub and submit a pull request.
+
+    http://github.com/evansalter/vim-checklist/
+
+====================================================================
+Section 4: Changelog                            *ChecklistChangelog*
+
+v0.1.0
+    Initial version
+
+====================================================================
