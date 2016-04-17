@@ -15,7 +15,7 @@ function! s:hasCheckbox(line)
     endif
 endfunc
 
-function! s:checklistAction(action)
+function! s:checklistAction(action) range
     let currentLine = a:firstline
     while currentLine <= a:lastline
         let line = getline(currentLine)
