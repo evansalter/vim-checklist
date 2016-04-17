@@ -52,7 +52,7 @@ You can also toggle, enable, or disable a range of checkboxes by selecting a ran
 Set up your mappings to toggle, enable, and disable checkboxes.  Add the following lines to your `.vimrc`, 
 replacing the mappings with your own:
 
-```
+```viml
 nnoremap <leader>ct :ChecklistToggleCheckbox<cr>
 nnoremap <leader>ce :ChecklistEnableCheckbox<cr>
 nnoremap <leader>cd :ChecklistDisableCheckbox<cr>
@@ -65,4 +65,10 @@ Ensure to create mappings for normal and visual modes.  This allows you to manip
 
 The default filetypes this plugin is enabled for are `text` and `markdown`.  To set your own list of filetypes, add this line to your `.vimrc`:
 
-`let g:checklist_filetypes = ['filetype1', 'filetype2', ...]`
+```viml
+let g:checklist_filetypes = ['filetype1', 'filetype2', ...]
+```
+
+## Bugs/Requests
+
+Feel free to create an issue if you come across something that doesn't work right, or if it breaks any of your other plugins.  You may also create an issue if you would like to request a new feature for the plugin.
